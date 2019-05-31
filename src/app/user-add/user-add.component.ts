@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+// import { join } from 'path';
 
 @Component({
   selector: 'app-user-add',
@@ -29,7 +30,8 @@ export class UserAddComponent implements OnInit {
     this.isLoadingResults = true;
     this.api.addUser(form)
       .subscribe(res => {
-        let id = res['id'];
+        res = JSON.parse(String(res));
+        let id = res.id;
         this.isLoadingResults = false;
         this.router.navigate(['/user-details', id]);
       }, (err) => {

@@ -5,9 +5,9 @@ import { catchError, tap, map } from 'rxjs/operators';
 import { User } from './user';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json'})
 };
-const apiUrl = 'http://localhost:8080/v2/user';
+const apiUrl = 'http://localhost:8081/v2/user';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +28,7 @@ export class ApiService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(apiUrl)
-      .pipe(
+    return this.http.get<User[]>(apiUrl).pipe(
         tap(heroes => console.log('fetched users')),
         catchError(this.handleError('getUsers', []))
       );
@@ -44,8 +43,9 @@ export class ApiService {
   }
 
   addUser(user): Observable<User> {
+    user.type = parseInt(user.type);
     return this.http.post<User>(apiUrl, user, httpOptions).pipe(
-      tap((user: User) => console.log(`added user w/ id=${user.id}`)),
+      tap((res: any) => console.log(res)),
       catchError(this.handleError<User>('addUser'))
     );
   }
